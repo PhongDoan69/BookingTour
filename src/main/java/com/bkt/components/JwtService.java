@@ -1,0 +1,101 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.bkt.components;
+
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.JWSVerifier;
+import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
+import java.text.ParseException;
+import java.util.Date;
+import org.cloudinary.json.JSONObject;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author kyan2
+ */
+@Component
+public class JwtService {
+
+    private static final String SECRET_KEY = "20510220032051051098"; // Khóa bí mật của bạn
+    private static final byte[] SHARED_SECRET_KEY = SECRET_KEY.getBytes();
+    private static final int EXPIRE_TIME = 86400000; // Thời gian sống của token (24 giờ)
+
+    public String generateTokenLogin(String username) {
+        String token = null;    
+        try {
+            
+            JWSSigner signer = new MACSigner(SHARED_SECRET_KEY);
+            
+            JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
+            builder.claim("username", username);
+            
+            builder.expirationTime(new Date(System.currentTimeMillis() + EXPIRE_TIME));
+            
+            JWTClaimsSet claimsSet = builder.build();
+            SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
+            
+            signedJWT.sign(signer);
+            token = signedJWT.serialize();
+            System.out.println("\n Token : " + token + "\n");
+            return token;
+
+        } catch (JOSEException e) {
+            System.out.println("\n Eror Message : " + e.getMessage().toString().substring(0,50 ) + " \n");
+        }
+        return null;
+    }
+
+    private JWTClaimsSet getClaimsFromToken(String token) {
+        JWTClaimsSet claims = null;
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            JWSVerifier verifier = new MACVerifier(SHARED_SECRET_KEY);
+            if (signedJWT.verify(verifier)) {
+                claims = signedJWT.getJWTClaimsSet();
+            }
+        } catch (JOSEException | ParseException e) {
+            System.err.println(e.getMessage());
+        }
+        return claims;
+    }
+    
+    private Date getExpirationDateFromToken(String token) {
+        JWTClaimsSet claims = getClaimsFromToken(token);
+        Date expiration = claims.getExpirationTime();
+        return expiration;
+    }
+
+    public String getUsernameFromToken(String token) {
+        String username = null;
+        try {
+            JWTClaimsSet claims = getClaimsFromToken(token);
+            username = claims.getStringClaim("username");
+        } catch (ParseException e) {
+            System.err.println(e.getMessage());
+        }
+        return username;
+    }
+
+    private Boolean isTokenExpired(String token) {
+        Date expiration = getExpirationDateFromToken(token);
+        return expiration.before(new Date());
+    }
+
+    public Boolean validateTokenLogin(String token) {
+        if (token == null || token.trim().length() == 0) {
+            return false;
+        }
+        String username = getUsernameFromToken(token);
+        
+        return !(username == null || username.isEmpty() || isTokenExpired(token));
+    }
+}
