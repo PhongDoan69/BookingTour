@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private Cloudinary cloudinary;
 
-    @Override
+     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User u = this.userRepo.getUserByUsername(username);
         if (u == null) {
@@ -57,7 +57,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean authUser(String username, String password) {
-        
         return this.userRepo.authUser(username, password);
     }
 

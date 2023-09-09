@@ -8,17 +8,35 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<c:url value="/" var="action" />
+<c:url value="/login" var="action" />
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">E-commerce Website!!!</a>
+        <a class="navbar-brand" href="#">Booking Tour</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav me-auto">
+                 
+                <c:url value ="/tours" var="tour" />
+                 <li class="nav-item">
+                     
+                    <a class="nav-link" href="${tour}">Quản Lý Tour</a>
+                </li>
+                <c:url value= "/news" var="news" />
                 <li class="nav-item">
-                    <a class="nav-link" href="${action}">Trang chủ</a>
+                    
+                    <a class="nav-link" href="${news}">Quản Lý Tin Tức</a>
+                </li>
+                 <c:url value="/users" var="user" />
+                <li class="nav-item">
+                   
+                    <a class="nav-link" href="${user}">Quản Lý Tài Khoản</a>
+                </li>
+                <c:url value = "/statistics" var="statistic"  />
+                <li class="nav-item">
+                    
+                    <a class="nav-link" href="${statistic}">Thống Kê</a>
                 </li>
                 <c:forEach items="${categories}" var="c">
                     <c:url value="/" var="searchUrl">
@@ -30,9 +48,6 @@
                 </c:forEach>
                 <c:choose>
                     <c:when test="${pageContext.request.userPrincipal.name != null}">
-                        <li class="nav-item">
-                            <a class="nav-link text-danger" href="<c:url value="/" />">Chào ${pageContext.request.userPrincipal.name} !</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-info" href="<c:url value="/logout" />">Đăng xuất</a>
                         </li>

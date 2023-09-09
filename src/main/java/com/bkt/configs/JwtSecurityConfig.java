@@ -63,17 +63,12 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().ignoringAntMatchers("/api/**");
-        http.authorizeRequests().antMatchers("/api/login/").permitAll();
-//        http.authorizeRequests().antMatchers("/api/tours/").permitAll();
-        http.authorizeRequests().antMatchers("/api/tours/**").permitAll();
-//        http.authorizeRequests().antMatchers("/api/categories/").permitAll();
-        http.authorizeRequests().antMatchers("/api/register/").permitAll();
-//        http.authorizeRequests().antMatchers("/api/users/").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/**/comments/").permitAll();
+        http.authorizeRequests().anyRequest().permitAll();
         http.antMatcher("/api/**").httpBasic().authenticationEntryPoint(restServicesEntryPoint()).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-                .antMatchers(HttpMethod.POST, "/api/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+                .antMatchers(HttpMethod.POST, "/api/news/").access("hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.DELETE, "/api/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')").and()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());

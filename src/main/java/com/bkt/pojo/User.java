@@ -91,8 +91,7 @@ public class User implements Serializable {
     @Size(max = 45)
     @Column(name = "avatar")
     private String avatar;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postBy")
-    private Set<News> newsSet;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
     private Set<Employee> employeeSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
@@ -202,14 +201,6 @@ public class User implements Serializable {
         this.avatar = avatar;
     }
 
-    @XmlTransient
-    public Set<News> getNewsSet() {
-        return newsSet;
-    }
-
-    public void setNewsSet(Set<News> newsSet) {
-        this.newsSet = newsSet;
-    }
 
     @XmlTransient
     public Set<Employee> getEmployeeSet() {

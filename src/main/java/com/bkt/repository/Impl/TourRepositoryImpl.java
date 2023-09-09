@@ -23,6 +23,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -139,7 +140,8 @@ public class TourRepositoryImpl implements TourRepository {
         Tour t = this.getTourById(id);
 
         try {
-            s.delete(t);
+            t.setIsDelete(0);
+            s.save(t);
             return true;
         } catch (HibernateException ex) {
             ex.printStackTrace();
@@ -147,6 +149,25 @@ public class TourRepositoryImpl implements TourRepository {
         }
     }
 
-   
+    @Override   
+    public List<Tour> getTourByCategory(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+
+        CriteriaBuilder b = s.getCriteriaBuilder();
+
+        CriteriaQuery<Tour> q = b.createQuery(Tour.class);
+
+        Root<Tour> r = q.from(Tour.class);
+
+        q.select(r);
+        
+        q.where(b.equal(r.get("categoryId"), id));
+        q.getOrderList();
+        q.orderBy(b.desc(r.get("id")));
+
+        Query query = s.createQuery(q);
+     
+         return query.getResultList();
+    }
 
 }

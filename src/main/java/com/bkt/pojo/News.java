@@ -23,10 +23,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -41,6 +43,34 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "News.findByTitle", query = "SELECT n FROM News n WHERE n.title = :title"),
     @NamedQuery(name = "News.findByPostDate", query = "SELECT n FROM News n WHERE n.postDate = :postDate")})
 public class News implements Serializable {
+
+    /**
+     * @return the file
+     */
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
+    /**
+     * @return the imageCover
+     */
+    public String getImageCover() {
+        return imageCover;
+    }
+
+    /**
+     * @param imageCover the imageCover to set
+     */
+    public void setImageCover(String imageCover) {
+        this.imageCover = imageCover;
+    }
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,14 +89,12 @@ public class News implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "content")
     private String content;
+    
     @Basic(optional = false)
-    @NotNull
     @Column(name = "postDate")
     @Temporal(TemporalType.DATE)
     private Date postDate;
-    @JoinColumn(name = "postBy", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private User postBy;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "newsId")
     private Set<NewsImgae> newsImgaeSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "newsId")
@@ -74,6 +102,13 @@ public class News implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "newsId")
     private Set<Comment> commentSet;
 
+    @Transient
+    private  MultipartFile file;
+    
+    @Size(max = 255)
+    @Column(name = "imageCover")
+    private String imageCover;
+    
     public News() {
     }
 
@@ -118,14 +153,6 @@ public class News implements Serializable {
 
     public void setPostDate(Date postDate) {
         this.postDate = postDate;
-    }
-
-    public User getPostBy() {
-        return postBy;
-    }
-
-    public void setPostBy(User postBy) {
-        this.postBy = postBy;
     }
 
     @XmlTransient

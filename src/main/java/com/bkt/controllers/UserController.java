@@ -5,18 +5,17 @@
 package com.bkt.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
- * @author admin
+ * @author kyan2
  */
 @Controller
 public class UserController {
-    @GetMapping("/login")
-    public String login() {
-        return "login";
+    
+    @RequestMapping("/users")
+    public String list(){
+        return "user";
     }
-    
-    
 }

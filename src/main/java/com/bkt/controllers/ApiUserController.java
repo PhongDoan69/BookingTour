@@ -42,13 +42,15 @@ public class ApiUserController {
     @PostMapping("/login/")
     @CrossOrigin
     public ResponseEntity<String> login(@RequestBody User user) {
-        if (this.userService.authUser(user.getUsername(), user.getPassword()) == true) {
-            String token = this.jwtService.generateTokenLogin(user.getUsername());
-            System.out.println("\n------------------Token Message : " + token );
+
+        if(this.userService.authUser(user.getUsername(), user.getPassword())) {
+              String token = this.jwtService.generateTokenLogin(user.getUsername());
+
             return new ResponseEntity<>(token, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("errorr", HttpStatus.BAD_REQUEST);
+
     }
 
     @PostMapping("/test/")
@@ -81,15 +83,13 @@ public class ApiUserController {
         String password = request.get("password");
         User user = this.userService.registerUser(username, password);
         System.out.println(" user : " + user.toString());
-            
-       Map<String, String> respone = new HashMap<>();
-       respone.put("username", user.getUsername());
-       respone.put("firstName", user.getFirstName());
-       respone.put("lastName", user.getLastName());
 
-       
-       return ResponseEntity.ok().body(respone);
+        Map<String, String> respone = new HashMap<>();
+        respone.put("username", user.getUsername());
+        respone.put("firstName", user.getFirstName());
+        respone.put("lastName", user.getLastName());
+
+        return ResponseEntity.ok().body(respone);
     }
-   
 
 }

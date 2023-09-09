@@ -25,8 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IndexController {
     @Autowired
     private CategoryService cateService;
-    @Autowired
-    private TourService tourService;
+   
     @Autowired
     private Environment env;
     
@@ -34,12 +33,7 @@ public class IndexController {
     @RequestMapping("/")    
     public String index(Model model, 
             @RequestParam Map<String, String> params) {
-        model.addAttribute("tours", this.tourService.getTours(params));
-        
-        int count = this.tourService.countTours();
-        int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
-        model.addAttribute("pages", Math.ceil(count*1.0/pageSize));
-        
+       
         return "index";
     }
 }

@@ -55,6 +55,20 @@ import org.springframework.web.multipart.MultipartFile;
 public class Tour implements Serializable {
 
     /**
+     * @return the isDelete
+     */
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    /**
+     * @param isDelete the isDelete to set
+     */
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    /**
      * @return the file
      */
     public MultipartFile getFile() {
@@ -165,6 +179,10 @@ public class Tour implements Serializable {
 
     @Transient
     private MultipartFile file;
+    
+    
+    @Column(name = "is_delete")
+    private Integer isDelete;
     
     public Tour() {
     }

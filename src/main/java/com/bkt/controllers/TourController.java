@@ -6,6 +6,7 @@ package com.bkt.controllers;
 
 import com.bkt.pojo.Tour;
 import com.bkt.service.TourService;
+import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -26,8 +29,9 @@ public class TourController {
     private TourService tourService;
     
     @GetMapping("/tours")
-    public String list(Model model) {
-        model.addAttribute("tour", new Tour());
+    public String list(Model model, 
+            @RequestParam Map<String, String> params) {
+        model.addAttribute("tours", this.tourService.getTours(params));
         
         return "tours";
     }
@@ -47,4 +51,6 @@ public class TourController {
         
         return "tours";
     }
+    
+    
 }

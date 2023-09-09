@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,29 +34,39 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api")
 public class ApiTourController {
+
     @Autowired
     private TourService tourService;
-    
-    @DeleteMapping("/tours/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable(value = "id") int id) {
-        this.tourService.deleteTour(id);
-    }
-    
+
+//    @DeleteMapping("/tours/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void delete(@PathVariable(value = "id") int id) {
+//        this.tourService.deleteTour(id);
+//    }
     @RequestMapping("/tours/")
     @CrossOrigin
     public ResponseEntity<List<Tour>> list(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.tourService.getTours(params), HttpStatus.OK);
     }
-    
-    @RequestMapping(path = "/tours/{tourId}/", produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @GetMapping("/tours/category/{categoryId}")
     @CrossOrigin
-    public ResponseEntity<Tour> details(@PathVariable(value = "") int id) {
-        return new ResponseEntity<>(this.tourService.getTourById(id), HttpStatus.OK);
-        
-        
+    public ResponseEntity<List<Tour>> getToursByCategory(@PathVariable int categoryId) {
+        if (this.tourService.getTourByCategory(categoryId) != null) {
+            return new ResponseEntity<>(this.tourService.getTourByCategory(categoryId), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
-    
+
+    @PatchMapping("/tours/{tourId}/")
+    @CrossOrigin
+    public ResponseEntity<String> delete(@PathVariable(value = "id") int id) {
+        if (this.tourService.deleteTour(id)) {
+            return new ResponseEntity<>("delete successful", HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>("delete failure", HttpStatus.BAD_REQUEST);
+    }
+
 //    @PostMapping(path = "/products", consumes = {
 //        MediaType.MULTIPART_FORM_DATA_VALUE,
 //        MediaType.APPLICATION_JSON_VALUE
@@ -71,6 +82,4 @@ public class ApiTourController {
 //            p.setFile(file[0]);
 //        this.prodService.addOrUpdateProduct(p);
 //    }
-    
-  
 }

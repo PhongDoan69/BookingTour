@@ -61,5 +61,10 @@ public class TourServiceImpl implements TourService{
     public boolean deleteTour(int id) {
         return this.tourRepo.deleteTour(id);
     }
+
+    @Override
+    public List<Tour> getTourByCategory(int id) {
+        return this.tourRepo.getTourByCategory(id);
+    }
     
 }

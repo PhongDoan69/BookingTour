@@ -4,6 +4,7 @@
  */
 package com.bkt.configs;
 
+import com.bkt.handlers.LoginHandler;
 import com.bkt.service.UserService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,47 +36,60 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     "com.bkt.controllers",
     "com.bkt.repository",
     "com.bkt.service",
-    "com.bkt.components"
+    "com.bkt.components",
+    "com.bkt.handlers"
 })
 @Order(2)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private Environment env;
+
+    @Autowired
+    private LoginHandler loginHandler;
     
     @Autowired
     @Qualifier("userService")
     private UserDetailsService userDetailsService;
 
-    
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-              
+
     }
 
-    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-       
-       http.formLogin().loginPage("/login")
+
+        http.formLogin()
+                .loginPage("/login")
                 .usernameParameter("username")
-                .passwordParameter("password");
-        
-        http.formLogin().defaultSuccessUrl("/")
+                .passwordParameter("password")
+                .successHandler(loginHandler)
                 .failureUrl("/login?error");
-        
+
         http.logout().logoutSuccessUrl("/login");
+
         http.exceptionHandling()
                 .accessDeniedPage("/login?accessDenied");
-        
+
+        http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/tours").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/news").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/users").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/statistics").access("hasRole('ROLE_ADMIN')");
+
         http.csrf().disable();
+            
     }
-    
+
     @Bean
     public Cloudinary cloudinary() {
         Cloudinary cloudinary
@@ -85,8 +100,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "secure", true));
         return cloudinary;
     }
-    
-     @Bean
+
+    @Bean
     public SimpleDateFormat simpleDateFormat() {
         return new SimpleDateFormat("yyyy-MM-dd");
     }

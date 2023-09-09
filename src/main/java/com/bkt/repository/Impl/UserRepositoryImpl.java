@@ -27,20 +27,19 @@ public class UserRepositoryImpl implements UserRepository{
    @Autowired
     private BCryptPasswordEncoder passEncoder;
 
-    @Override
+   @Override
     public User getUserByUsername(String username) {
         Session s = this.factory.getObject().getCurrentSession();
         Query q = s.createQuery("FROM User WHERE username=:un");
         q.setParameter("un", username);
-        
-      
+
         return (User) q.getSingleResult();
     }
 
     @Override
     public boolean authUser(String username, String password) {
         User  u = this.getUserByUsername(username);
-        System.out.println("\n Token : " + this.passEncoder.matches(password, u.getPassword()) + "\n");
+        
         return this.passEncoder.matches(password, u.getPassword());
     }
 

@@ -7,8 +7,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+<style>
+    
+    .form {
+        position: absolute;
+        border: 1px solid black;
+        padding: 80px;
+        right: 350px;
+    }
+    
+    #name-page {
+        color: red;
+        font-size: 40px;
+        font-weight:  bold;
+    }
+    
+    
+</style>
 <c:url value="/login" var="action" />
-<form method="post" action="${action}">
+<form method="post" action="${action}" class="form">
+    <div id="name-page">Trang Đăng Nhập Admin</div>
     <div class="form-floating mb-3 mt-3">
         <input type="text" class="form-control" id="name" placeholder="Tên đăng nhập" name="username">
         <label for="name">Tên đăng nhập</label>
@@ -21,7 +39,5 @@
 
     <div class="form-floating mt-3 mb-3">
         <input type="submit" value="Đăng nhập" class="btn btn-danger" />
-
-        <a class="btn btn-primary" href="<c:url value="/register" />">Đăng ký</a>
     </div>
 </form>

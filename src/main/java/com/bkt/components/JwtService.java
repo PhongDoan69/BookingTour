@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtService {
 
-    private static final String SECRET_KEY = "20510220032051051098"; // Khóa bí mật của bạn
+    private static final String SECRET_KEY = "11111111111111111111111111111111"; // Khóa bí mật của bạn
     private static final byte[] SHARED_SECRET_KEY = SECRET_KEY.getBytes();
     private static final int EXPIRE_TIME = 86400000; // Thời gian sống của token (24 giờ)
 
@@ -49,7 +49,7 @@ public class JwtService {
             return token;
 
         } catch (JOSEException e) {
-            System.out.println("\n Eror Message : " + e.getMessage().toString().substring(0,50 ) + " \n");
+           System.out.println("\n Error Message: " + e.getMessage() + "\n");
         }
         return null;
     }

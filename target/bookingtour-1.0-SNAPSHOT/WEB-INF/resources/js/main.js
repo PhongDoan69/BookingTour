@@ -1,8 +1,20 @@
 function deleteProduct(endpoint) {
     if (confirm("Bạn chắc chắn xóa không?") === true) {
-        fetch(endpoint, {
-            method: "delete"
-        }).then(res => {
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        let body = JSON.stringify({
+            "is_delete": 0
+        });
+
+        let request = {
+            method: "patch",
+            headers: myHeaders,
+            body: body
+        };
+
+        fetch(endpoint, request).then(res => {
             console.info(res);
             if (res.status === 204)
                 location.reload();
@@ -14,9 +26,9 @@ function deleteProduct(endpoint) {
 
 function stringFormat(tourName) {
     var newString;
-    if(tourName.length > 15) {
+    if (tourName.length > 15) {
         newString = tourName.splice(15) + "...";
         return newString;
-    } else 
+    } else
         return tourName;
 }

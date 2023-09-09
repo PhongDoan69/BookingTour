@@ -28,4 +28,32 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="content"
                        value="/WEB-INF/pages/login.jsp" />
     </definition>
+     <definition name="news" extends="baseLayout">
+        <put-attribute name="title" value="Tin tức" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/news.jsp" />
+    </definition>
+    
+    <definition name="addNews" extends="baseLayout">
+        <put-attribute name="title" value="Thêm tin tức" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/addNews.jsp" />
+    </definition>
+    
+    <definition name="user" extends="baseLayout">
+        <put-attribute name="title" value="Tài khoản" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/user.jsp" />
+    </definition>
+    <definition name="statistic" extends="baseLayout">
+        <put-attribute name="title" value="Thống kê" />
+        <put-attribute name="content"
+                       value="/WEB-INF/pages/statistic.jsp" />
+    </definition>
+    
+    
+    <definition name="login" template="/WEB-INF/layout/loginBase.jsp">
+        <put-attribute name="title" value="Đăng nhập" />
+        <put-attribute name="content" value="/WEB-INF/pages/login.jsp" />
+    </definition>
 </tiles-definitions>

@@ -5,63 +5,66 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<style>
+    .card {
+        width: 300px;
+        margin: 10px;
+    }
 
-<h1 class="text-center text-info mt-1">QUẢN LÝ TOUR DU LỊCH</h1>
+    .card-img-top {
+        width: 100%;
+        height: 250px;
+    }
 
+    .card-title {
+        font-size: 15px;
+        height:  100px;
+    }
+
+    .card-text {
+        color: red;
+        font-weight: bold;
+    }
+    
+    .btn-delete {
+        margin-left : 76px;
+    }
+</style>
 <c:url value="/tours" var="action" />
-<form:form modelAttribute="product" method="post" 
-           action="${action}" enctype="multipart/form-data">
-    <form:errors path="*" element="div" cssClass="alert alert-danger" />
-    <form:hidden path="id" />
-    <form:hidden path="image" />
-    <div class="form-floating mb-3 mt-3">
-        <form:input type="text" class="form-control" path="name" id="name" 
-                    placeholder="Tên sản phẩm" name="name" />
-        <label for="name">Tên sản phẩm</label>
-        <form:errors path="name" element="div" cssClass="text-danger" />
+<section>
+    <h1 class="text-center text-info mt-1">QUẢN LÝ TOUR DU LỊCH</h1>
+    <div>
+        <a href="<c:url value="/tours" />" class="btn btn-info">Thêm sản phẩm</a>
     </div>
-    <div class="form-floating">
-        <form:textarea class="form-control" id="description" name="description" 
-                       path="description" 
-                       placeholder="Mô tả sản phẩm"></form:textarea>
-        <label for="description">Mô tả sản phẩm</label>
-        <form:errors path="description" element="div" cssClass="text-danger" />
-    </div>
-    <div class="form-floating mb-3 mt-3">
-        <form:input type="text" class="form-control" path="price" 
-                    id="price" placeholder="Gía sản phẩm" name="price" />
-        <label for="price">Gía sản phẩm</label>
-        <form:errors path="price" element="div" cssClass="text-danger" />
-    </div>
-    <div class="form-floating">
-        <form:select class="form-select" id="cate" name="cate" 
-                     path="categoryId">
-            <c:forEach items="${categories}" var="c">
-                <c:choose>
-                    <c:when test="${c.id == product.categoryId.id}"> <option value="${c.id}" selected>${c.name}</option></c:when>
-                    <c:otherwise> <option value="${c.id}">${c.name}</option></c:otherwise>
-                </c:choose>
-               
+    <table class="table table-hover">
+      
+        <div class="row" >
+            <c:forEach items="${tours}" var="t">
+                <c:set var="tourName" value="${t.tourName}" />
+                <c:if test="${tourName.length() > 100}">
+                    <c:set var="tourName" value="${fn:substring(tourName, 0, 100)}..." />
+                </c:if>
+                <div class="card">
+                    
+                    <img class="card-img-top" src="${t.imageCover}" alt="Card image" />
+                    <div class="card-body">
+                        <h4 class="card-title">${tourName}</h4>
+                        <p class="card-text">
+                            <fmt:formatNumber value="${t.price}" type="number" pattern="#,##0.00"/> đ
+                        </p>
+                        <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                        <c:url value="/api/tour/${t.id}" var="delete" />
+                        <button class="btn btn-danger btn-delete" onclick="delTour('${delete}')">Xóa</button>
+                    </div>
+                        
+                </div>
             </c:forEach>
-        </form:select>
-        <label for="cate" class="form-label">Danh mục sản phẩm</label>
-    </div>
-    <div class="form-floating mb-3 mt-3">
-        <form:input type="file" class="form-control" path="file" id="file"/>
-        <label for="price">Ảnh sản phẩm</label>
-        <c:if test="${product.image != null}">
-            <img src="${product.image}" width="120" />
-        </c:if>
-    </div>
-    <div class="form-floating mb-3 mt-3">
-        <button type="submit" class="btn btn-info" >
-            <c:choose>
-                <c:when test="${product.id != null}">Cập nhật sản phẩm</c:when>
-                <c:otherwise>Thêm sản phẩm</c:otherwise>
-            </c:choose>
-            
-        </button>
-    </div>
-</form:form>
+
+        </div>
+    
+    </table>    
+</section>
+<script src="<c:url value="/js/main.js" />"></script>

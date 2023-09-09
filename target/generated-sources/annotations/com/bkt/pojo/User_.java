@@ -4,20 +4,18 @@ import com.bkt.pojo.Comment;
 import com.bkt.pojo.Customer;
 import com.bkt.pojo.Employee;
 import com.bkt.pojo.Liked;
-import com.bkt.pojo.News;
 import com.bkt.pojo.OrderTable;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2023-09-07T15:42:57")
+@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2023-09-09T19:17:17")
 @StaticMetamodel(User.class)
 public class User_ { 
 
     public static volatile SingularAttribute<User, String> lastName;
     public static volatile SetAttribute<User, Customer> customerSet;
-    public static volatile SetAttribute<User, News> newsSet;
     public static volatile SingularAttribute<User, Boolean> active;
     public static volatile SingularAttribute<User, String> avatar;
     public static volatile SetAttribute<User, OrderTable> orderTableSet;
