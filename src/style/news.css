@@ -1,0 +1,28 @@
+.news-container {
+    display: flex; 
+    align-items: center;    
+    margin-bottom: 10px;
+    text-align: center; 
+}
+
+.news-image {
+    flex: 1; 
+    max-width: 300px; 
+    margin-right: 10px;
+}
+
+
+.news-title {
+    flex: 3; 
+    font-weight: bold;
+}
+
+
+.news{
+    margin-top: 100px;
+}
+article.card{
+    padding-top: 10px;
+    padding-left: 10px;
+    width: 850px;
+}

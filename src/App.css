@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
 }
@@ -36,3 +37,9 @@
     transform: rotate(360deg);
   }
 }
+@font-face {
+  font-family: icons;
+  src: url(../fonts/icons.eot?a978f6de474e62cbeeee2c144d45e930?#iefix) format("embedded-opentype"),url(../fonts/icons.woff2?a978f6de474e62cbeeee2c144d45e930) format("woff2"),url(../fonts/icons.woff?a978f6de474e62cbeeee2c144d45e930) format("woff"),url(../fonts/icons.ttf?a978f6de474e62cbeeee2c144d45e930) format("truetype"),url(../fonts/icons.svg?a978f6de474e62cbeeee2c144d45e930#icons) format("svg")
+}
+
+

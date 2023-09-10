@@ -1,0 +1,20 @@
+.news-detail {
+    text-align: center; /* Căn giữa nội dung */
+    max-width: 800px; /* Giới hạn chiều rộng của nội dung */
+    margin: 0 auto; /* Canh giữa theo chiều ngang */
+}
+
+.image-container {
+    margin: 20px 0; /* Khoảng cách phía trên và phía dưới của hình ảnh */
+}
+
+.img-news-detail {
+    max-width: 100%; /* Đảm bảo hình ảnh không vượt quá chiều rộng của nội dung cha */
+}
+
+.news-content {
+    text-align: left; /* Căn trái văn bản nội dung */
+    line-height: 1.5; /* Khoảng cách giữa các dòng */
+    font-size: 16px; /* Kích thước font chữ */
+    padding-top: 20px;
+}
