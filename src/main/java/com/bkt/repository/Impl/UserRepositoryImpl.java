@@ -4,6 +4,7 @@
  */
 package com.bkt.repository.Impl;
 
+import com.bkt.pojo.News;
 import com.bkt.pojo.User;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,11 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.bkt.repository.UserRepository;
+import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -49,5 +55,32 @@ public class UserRepositoryImpl implements UserRepository{
         s.save(u);
         
         return u;
+    }
+
+    @Override
+    public List<User> listUser() {
+        Session session = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("isDelete"), 1));
+        javax.persistence.Query query = session.createQuery(criteriaQuery);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean deleteUser(String username) {
+        Session s = this.factory.getObject().getCurrentSession();
+        User u = this.getUserByUsername(username);
+        
+         try {
+            u.setActive(0);
+            s.save(u);
+            return true;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
 }

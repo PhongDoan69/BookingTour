@@ -59,46 +59,13 @@ public class TourRepositoryImpl implements TourRepository {
 
         q.select(r).where(b.equal(r.get("isDelete"), 1));
 
-//        if (params != null && !params.isEmpty()) {
-//            List<Predicate> predicates = new ArrayList<>();
-//
-//            String kw = params.get("kw");
-//            if (kw != null && !kw.isEmpty()) {
-//                predicates.add(b.like(r.get("tour_name").as(String.class), String.format("%%%s%%", kw)));
-//            }
-//
-//            String fromPriceStr = params.get("fromPrice");
-//            if (fromPriceStr != null && !fromPriceStr.isEmpty()) {
-//
-//                BigDecimal fromPrice = new BigDecimal(fromPriceStr);
-//                predicates.add(b.greaterThanOrEqualTo(r.get("price").as(BigDecimal.class), fromPrice));
-//            }
-//
-//            String toPriceStr = params.get("toPrice");
-//            if (toPriceStr != null && !toPriceStr.isEmpty()) {
-//
-//                BigDecimal toPrice = new BigDecimal(toPriceStr);
-//                predicates.add(b.lessThanOrEqualTo(r.get("price").as(BigDecimal.class), toPrice));
-//            }
-//
-//            // Combine all predicates with 'AND' operator
-//            if (!predicates.isEmpty()) {
-//                q.where(b.and(predicates.toArray(new Predicate[0])));
-//            }
-//        }
+//       
         q.getOrderList();
         q.orderBy(b.desc(r.get("id")));
 
         Query query = s.createQuery(q);
 
-//        if (params != null && !params.isEmpty()) {
-//            String page = params.get("page");
-//            if (page != null && !page.isEmpty()) {
-//                int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
-//                query.setMaxResults(pageSize);
-//                query.setFirstResult((Integer.parseInt(page) - 1) * pageSize);
-//            }
-//        }
+//     
         return query.getResultList();
     }
 

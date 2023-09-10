@@ -17,6 +17,7 @@ import com.bkt.service.UserService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -98,6 +99,16 @@ public class UserServiceImpl implements UserService {
         
         this.userRepo.addUser(u);
         return u;
+    }
+
+    @Override
+    public List<User> listUser() {
+        return this.userRepo.listUser();
+    }
+
+    @Override
+    public boolean deleteUser(String username) {
+        return this.userRepo.deleteUser(username);
     }
 
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -43,8 +44,8 @@ public class ApiUserController {
     @CrossOrigin
     public ResponseEntity<String> login(@RequestBody User user) {
 
-        if(this.userService.authUser(user.getUsername(), user.getPassword())) {
-              String token = this.jwtService.generateTokenLogin(user.getUsername());
+        if (this.userService.authUser(user.getUsername(), user.getPassword())) {
+            String token = this.jwtService.generateTokenLogin(user.getUsername());
 
             return new ResponseEntity<>(token, HttpStatus.OK);
         }
@@ -70,9 +71,19 @@ public class ApiUserController {
 
     @GetMapping(path = "/current-user/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<User> details(Principal user) {
-        User u = this.userService.getUserByUn(user.getName());
-        return new ResponseEntity<>(u, HttpStatus.OK);
+    public ResponseEntity<User> details(@RequestHeader("Authorization") String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            String jwtToken = token.substring(7); 
+            
+            String username = jwtService.getUsernameFromToken(jwtToken); 
+
+           
+            User u = this.userService.getUserByUn(username);
+            return new ResponseEntity<>(u, HttpStatus.OK);
+        } else {
+            // Xử lý khi không có token hoặc token không hợp lệ
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PostMapping("/register/")

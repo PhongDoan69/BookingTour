@@ -25,14 +25,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtService {
 
-    private static final String SECRET_KEY = "11111111111111111111111111111111"; // Khóa bí mật của bạn
-    private static final byte[] SHARED_SECRET_KEY = SECRET_KEY.getBytes();
-    private static final int EXPIRE_TIME = 86400000; // Thời gian sống của token (24 giờ)
+      public static final String SECRET_KEY = "11111111111111111111111111111111";
+    public static final byte[] SHARED_SECRET_KEY = SECRET_KEY.getBytes();
+    public static final int EXPIRE_TIME = 86400000;
 
     public String generateTokenLogin(String username) {
-        String token = null;    
+        String token = null;
         try {
-            
             JWSSigner signer = new MACSigner(SHARED_SECRET_KEY);
             
             JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
@@ -45,13 +44,10 @@ public class JwtService {
             
             signedJWT.sign(signer);
             token = signedJWT.serialize();
-            System.out.println("\n Token : " + token + "\n");
-            return token;
-
         } catch (JOSEException e) {
-           System.out.println("\n Error Message: " + e.getMessage() + "\n");
+            System.out.println(e.getMessage());
         }
-        return null;
+        return token;
     }
 
     private JWTClaimsSet getClaimsFromToken(String token) {

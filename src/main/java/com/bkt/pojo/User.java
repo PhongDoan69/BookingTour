@@ -4,6 +4,7 @@
  */
 package com.bkt.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -82,7 +83,7 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
     @Column(name = "active")
-    private Boolean active;
+    private Integer active;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -93,14 +94,23 @@ public class User implements Serializable {
     private String avatar;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
+    @JsonIgnore
     private Set<Employee> employeeSet;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
+    @JsonIgnore
     private Set<Liked> likedSet;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
+    @JsonIgnore
     private Set<Comment> commentSet;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
+    @JsonIgnore
     private Set<Customer> customerSet;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
+    @JsonIgnore
     private Set<OrderTable> orderTableSet;
 
     public User() {
@@ -177,11 +187,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Boolean getActive() {
+    public Integer getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(Integer active) {
         this.active = active;
     }
 
