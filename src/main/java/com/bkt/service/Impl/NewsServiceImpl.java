@@ -63,12 +63,23 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public boolean updateNews(News n) {
-        return newsRepo.updateNews(n);
+        return this.newsRepo.updateNews(n);
     }
 
     @Override
     public List<News> listNews() {
-        return newsRepo.listNews();
+       
+        return this.newsRepo.listNews();
+    }
+
+    @Override
+    public boolean deleteNews(int id) {
+        return this.newsRepo.deleteNews(id);
+    }
+
+    @Override
+    public News getNewsById(int id) {
+        return this.newsRepo.getNewsById(id);
     }
 
 }

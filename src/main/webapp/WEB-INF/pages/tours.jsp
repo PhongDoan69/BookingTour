@@ -33,6 +33,7 @@
         margin-left : 76px;
     }
 </style>
+<c:url value="/api/tours" var="apiDel" />
 <c:url value="/tours" var="action" />
 <section>
     <h1 class="text-center text-info mt-1">QUẢN LÝ TOUR DU LỊCH</h1>
@@ -55,9 +56,9 @@
                         <p class="card-text">
                             <fmt:formatNumber value="${t.price}" type="number" pattern="#,##0.00"/> đ
                         </p>
-                        <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                        <a href="#" class="btn btn-outline-primary">Cập nhật</a>
                         <c:url value="/api/tour/${t.id}" var="delete" />
-                        <button class="btn btn-danger btn-delete" onclick="delTour('${delete}')">Xóa</button>
+                        <button class="btn btn-danger btn-delete" onclick="deleteTour(`${apiDel}/${t.id}`)">Xóa</button>
                     </div>
                         
                 </div>

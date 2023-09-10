@@ -4,6 +4,7 @@
  */
 package com.bkt.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -43,6 +44,20 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "News.findByTitle", query = "SELECT n FROM News n WHERE n.title = :title"),
     @NamedQuery(name = "News.findByPostDate", query = "SELECT n FROM News n WHERE n.postDate = :postDate")})
 public class News implements Serializable {
+
+    /**
+     * @return the isDelete
+     */
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    /**
+     * @param isDelete the isDelete to set
+     */
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
 
     /**
      * @return the file
@@ -96,14 +111,22 @@ public class News implements Serializable {
     private Date postDate;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "newsId")
+    @JsonIgnore
     private Set<NewsImgae> newsImgaeSet;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "newsId")
+    @JsonIgnore
     private Set<Liked> likedSet;
+    
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "newsId")
     private Set<Comment> commentSet;
 
     @Transient
     private  MultipartFile file;
+    
+    @Column(name = "is_delete")
+    private Integer isDelete;
     
     @Size(max = 255)
     @Column(name = "imageCover")

@@ -141,11 +141,12 @@ public class Tour implements Serializable {
     @Size(max = 100)
     @Column(name = "hotel")
     private String hotel;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    
+   
+    @Size(max = 100)
     @Column(name = "suitable_subject")
     private String suitableSubject;
+    
     @Size(max = 100)
     @Column(name = "endow")
     private String endow;

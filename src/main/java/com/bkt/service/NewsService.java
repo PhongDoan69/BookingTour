@@ -16,4 +16,6 @@ public interface NewsService {
     boolean addNews(News n);
     boolean updateNews(News n);
     List<News> listNews();
+    boolean deleteNews(int id);
+    News getNewsById(int id);
 }

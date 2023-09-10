@@ -5,6 +5,7 @@
 package com.bkt.repository.Impl;
 
 import com.bkt.pojo.News;
+import com.bkt.pojo.Tour;
 import com.bkt.repository.NewsRepository;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
+@PropertySource("classpath:configs.properties")
 public class NewsRepositoryImpl implements NewsRepository {
 
     @Autowired
@@ -54,14 +57,35 @@ public class NewsRepositoryImpl implements NewsRepository {
     @Override
     public List<News> listNews() {
         Session session = this.factory.getObject().getCurrentSession();
-        CriteriaBuilder b = session.getCriteriaBuilder();
-        CriteriaQuery<News> q = b.createQuery(News.class);
-        Root root = q.from(News.class);
-        q.select(root);
-        
-        Query query = session.createQuery(q);
-        
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<News> criteriaQuery = criteriaBuilder.createQuery(News.class);
+        Root<News> root = criteriaQuery.from(News.class);
+        criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("isDelete"), 1));
+        Query query = session.createQuery(criteriaQuery);
+
         return query.getResultList();
+    }
+
+    @Override
+    public boolean deleteNews(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        News n = this.getNewsById(id);
+
+        try {
+            n.setIsDelete(0);
+            s.save(n);
+            return true;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public News getNewsById(int id) {
+       Session session = this.factory.getObject().getCurrentSession();
+        
+       return session.get(News.class, id);
     }
 
 }

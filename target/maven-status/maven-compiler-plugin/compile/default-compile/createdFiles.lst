@@ -2,6 +2,7 @@ com\bkt\filters\RestAuthenticationEntryPoint.class
 com\bkt\service\Impl\TourServiceImpl.class
 com\bkt\configs\SecurityWebApplicationInitializer.class
 com\bkt\pojo\NewsImgae_.class
+com\bkt\controllers\ApiTourImageController.class
 com\bkt\repository\Impl\UserRepositoryImpl.class
 com\bkt\fomatters\CategoryFormatter.class
 com\bkt\pojo\Comment.class
@@ -27,6 +28,7 @@ com\bkt\pojo\TourImage.class
 com\bkt\service\CategoryService.class
 com\bkt\pojo\OrderDetail.class
 com\bkt\pojo\TourImage_.class
+com\bkt\repository\TourImageRepository.class
 com\bkt\pojo\Category.class
 com\bkt\controllers\ApiNewsController.class
 com\bkt\pojo\OrderTable.class
@@ -46,6 +48,7 @@ com\bkt\filters\JwtAuthenticationTokenFilter.class
 com\bkt\pojo\News.class
 com\bkt\controllers\ApiTourController.class
 com\bkt\repository\TourRepository.class
+com\bkt\repository\Impl\TourImageRepositoryImpl.class
 com\bkt\configs\DispatcherServletInit.class
 com\bkt\controllers\IndexController.class
 com\bkt\controllers\ApiUserController.class
@@ -55,6 +58,7 @@ com\bkt\controllers\ApiCategoryController.class
 com\bkt\filters\CustomAccessDeniedHandler.class
 com\bkt\pojo\Category_.class
 com\bkt\controllers\LoginController.class
+com\bkt\service\Impl\TourImageServiceImpl.class
 com\bkt\configs\WebAppContextConfig.class
 com\bkt\controllers\NewsController.class
 com\bkt\service\UserService.class
@@ -62,5 +66,6 @@ com\bkt\controllers\AddNewsController.class
 com\bkt\configs\TilesConfigs.class
 com\bkt\pojo\Review.class
 com\bkt\pojo\Review_.class
+com\bkt\service\TourImageService.class
 com\bkt\configs\HibernateConfig.class
 com\bkt\pojo\User_.class

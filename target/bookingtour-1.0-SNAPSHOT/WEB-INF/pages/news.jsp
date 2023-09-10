@@ -6,7 +6,7 @@
 
 <!DOCTYPE html> 
 <style>
-   
+
 
     .container-news {
         position: relative;
@@ -22,20 +22,37 @@
         position: absolute;
     }
 
+    .card-item{
+        margin: 10px;
+
+    }
+    
+    
 </style>
 
-<c:url value="/news" var="action" />
+<c:url value="/api/news" var="action" />
 <c:url value="/addNews" var="addNews" />
 
 <section>
     <div class="container-news">
 
         <a class="btn btn-primary" href="${addNews}">Thêm tin tức <strong>&#43;</strong></a>
-        <div>
+        <div class="row">
             <c:forEach items="${newsList}" var="news">
-                <div>${news.title}</div>
+                <div class="card card-item" style="width:400px">
+
+
+                    <img class="card-img-top" src="${news.imageCover}" alt="Card image">
+                    <div class="card-body">
+                        <h4 class="card-title">${news.title}</h4>
+                       
+                    </div>
+                        <c:url value="`${action}/${news.id}`" var="apiDel"/>
+                        <button class="btn btn-danger btn-delete" onclick="deleteNews(${apiDel})">Xóa</button>
+                </div>
             </c:forEach>
         </div>
-        
+
     </div>
 </section>
+ <script src="<c:url value="/js/news.js" />"></script>

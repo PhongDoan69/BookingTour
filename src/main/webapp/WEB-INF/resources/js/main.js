@@ -1,21 +1,13 @@
-function deleteProduct(endpoint) {
+function deleteTour(endpoint) {
+        console.info(endpoint);
     if (confirm("Bạn chắc chắn xóa không?") === true) {
 
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        let body = JSON.stringify({
-            "is_delete": 0
-        });
-
         let request = {
-            method: "patch",
-            headers: myHeaders,
-            body: body
+            method: 'DELETE',
+            redirect: 'follow'
         };
 
         fetch(endpoint, request).then(res => {
-            console.info(res);
             if (res.status === 204)
                 location.reload();
             else

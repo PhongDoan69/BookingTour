@@ -9,12 +9,13 @@ import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2023-09-09T19:17:17")
+@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2023-09-10T15:58:02")
 @StaticMetamodel(News.class)
 public class News_ { 
 
     public static volatile SetAttribute<News, Liked> likedSet;
     public static volatile SetAttribute<News, Comment> commentSet;
+    public static volatile SingularAttribute<News, Integer> isDelete;
     public static volatile SingularAttribute<News, String> imageCover;
     public static volatile SingularAttribute<News, Date> postDate;
     public static volatile SetAttribute<News, NewsImgae> newsImgaeSet;

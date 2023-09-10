@@ -43,7 +43,6 @@ public class TourRepositoryImpl implements TourRepository {
     @Autowired
     private LocalSessionFactoryBean factory;
 
-   
     @Autowired
     private Environment env;
 
@@ -58,7 +57,7 @@ public class TourRepositoryImpl implements TourRepository {
 
         Root<Tour> r = q.from(Tour.class);
 
-        q.select(r);
+        q.select(r).where(b.equal(r.get("isDelete"), 1));
 
 //        if (params != null && !params.isEmpty()) {
 //            List<Predicate> predicates = new ArrayList<>();
@@ -87,7 +86,6 @@ public class TourRepositoryImpl implements TourRepository {
 //                q.where(b.and(predicates.toArray(new Predicate[0])));
 //            }
 //        }
-
         q.getOrderList();
         q.orderBy(b.desc(r.get("id")));
 
@@ -130,8 +128,8 @@ public class TourRepositoryImpl implements TourRepository {
 
     @Override
     public Tour getTourById(int id) {
-        Session s = this.factory.getObject().getCurrentSession();
-        return s.get(Tour.class, id);
+       Session session = this.factory.getObject().getCurrentSession();
+       return session.get(Tour.class, id);
     }
 
     @Override
@@ -149,7 +147,7 @@ public class TourRepositoryImpl implements TourRepository {
         }
     }
 
-    @Override   
+    @Override
     public List<Tour> getTourByCategory(int id) {
         Session s = this.factory.getObject().getCurrentSession();
 
@@ -160,14 +158,14 @@ public class TourRepositoryImpl implements TourRepository {
         Root<Tour> r = q.from(Tour.class);
 
         q.select(r);
-        
-        q.where(b.equal(r.get("categoryId"), id));
+
+        q.where(b.equal(r.get("categoryId"), id)).where(b.equal(r.get("isDelete"), 1));
         q.getOrderList();
         q.orderBy(b.desc(r.get("id")));
 
         Query query = s.createQuery(q);
-     
-         return query.getResultList();
+
+        return query.getResultList();
     }
 
 }

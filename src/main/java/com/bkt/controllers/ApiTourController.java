@@ -39,10 +39,15 @@ public class ApiTourController {
     private TourService tourService;
 
 //    @DeleteMapping("/tours/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void delete(@PathVariable(value = "id") int id) {
-//        this.tourService.deleteTour(id);
+//    @CrossOrigin
+//    public ResponseEntity<String> delete(@PathVariable(value = "id") int id) {
+//        if(this.tourService.deleteTour(id))
+//        {
+//            return new ResponseEntity<>("successful", HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>("failure", HttpStatus.BAD_REQUEST);
 //    }
+    
     @RequestMapping("/tours/")
     @CrossOrigin
     public ResponseEntity<List<Tour>> list(@RequestParam Map<String, String> params) {
@@ -58,6 +63,22 @@ public class ApiTourController {
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
+    @RequestMapping(path = "/tours/{tourId}/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public ResponseEntity<Tour> getDetailTour(@PathVariable(value = "tourId") int tourId) {
+        Tour tour = this.tourService.getTourById(tourId);
+
+        if (tour != null) {
+          
+            if (tour.getFile() != null && tour.getFile().isEmpty()) {
+                tour.setFile(null);
+            }
+            return new ResponseEntity<>(tour, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
     @PatchMapping("/tours/{tourId}/")
     @CrossOrigin
     public ResponseEntity<String> delete(@PathVariable(value = "id") int id) {
@@ -65,6 +86,13 @@ public class ApiTourController {
             return new ResponseEntity<>("delete successful", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("delete failure", HttpStatus.BAD_REQUEST);
+    }
+    
+    
+    @DeleteMapping("/tours/{tourId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTours(@PathVariable(value = "tourId") int id) {
+        this.tourService.deleteTour(id);
     }
 
 //    @PostMapping(path = "/products", consumes = {
