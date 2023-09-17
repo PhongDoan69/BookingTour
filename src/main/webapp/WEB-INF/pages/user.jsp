@@ -9,6 +9,6 @@
 <c:url value="/users" var="action" />
 <section>
     <div>
-        
+        User
     </div>
 </section>

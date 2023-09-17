@@ -24,25 +24,27 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Transactional
-public class TourImageRepositoryImpl implements TourImageRepository{
+public class TourImageRepositoryImpl implements TourImageRepository {
+
     @Autowired
     private LocalSessionFactoryBean factory;
-    
+
     @Override
     public List<TourImage> listTourImageByTourId(int id) {
-         Session s = this.factory.getObject().getCurrentSession();
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+        CriteriaQuery<TourImage> criteriaQuery = criteriaBuilder.createQuery(TourImage.class);
+        Root<TourImage> root = criteriaQuery.from(TourImage.class);
 
-        CriteriaBuilder b = s.getCriteriaBuilder();
+        criteriaQuery.select(criteriaBuilder.construct(
+            TourImage.class,
+            root.get("id"), 
+            root.get("imageUrl")
+        ));
+        criteriaQuery.where(criteriaBuilder.equal(root.get("tourId"), id)); // Điều kiện truy vấn theo tourId
 
-        CriteriaQuery<TourImage> q = b.createQuery(TourImage.class);
+        return s.createQuery(criteriaQuery).getResultList();
 
-        Root<TourImage> r = q.from(TourImage.class);
-
-        q.select(r).where(b.equal(r.get("tourId"), id));
-
-        Query query = s.createQuery(q);
-
-        return query.getResultList();
     }
-    
+
 }
